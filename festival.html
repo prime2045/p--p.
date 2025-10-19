@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фестивали - Cooksy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #9f9c81;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #f39c12;
+            --light: #f9f9f9;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success: #27ae60;
+            --warning: #f1c40f;
+            --error: #e74c3c;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Шапка */
+        header {
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            color: var(--white);
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .nav-btn.primary {
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 5px;
+        }
+
+        .nav-btn.primary:hover {
+            background: #f8f9fa;
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .user-menu:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a, .user-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover, .user-dropdown button:hover {
+            background: #f8f9fa;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        /* Герой секция */
+        .festival-hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .festival-hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .festival-hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Секции */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 20px auto 0;
+        }
+
+        /* Фестивали */
+        .festival-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .festival-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .festival-tab.active {
+            color: var(--primary);
+        }
+
+        .festival-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .festival-section {
+            display: none;
+        }
+
+        .festival-section.active {
+            display: block;
+        }
+
+        .festival-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .festival-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .festival-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .festival-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .badge-upcoming {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .badge-active {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-completed {
+            background-color: var(--text-light);
+            color: white;
+        }
+
+        .festival-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .festival-info {
+            padding: 20px;
+        }
+
+        .festival-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .festival-description {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .festival-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .festival-location {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .festival-participants {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .participant-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            background-color: var(--text-light);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Мастер-классы в фестивале */
+        .workshops-in-festival {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .workshop-mini-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .workshop-mini-card:hover {
+            background: #e8f4fc;
+        }
+
+        .workshop-mini-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .workshop-mini-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .workshop-mini-info p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            box-shadow: var(--shadow);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--error);
+        }
+
+        .notification.warning {
+            background-color: var(--warning);
+            color: #333;
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+
+            .festival-hero h1 {
+                font-size: 36px;
+            }
+
+            .festival-hero p {
+                font-size: 18px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+            .festival-tabs {
+                flex-wrap: wrap;
+            }
+
+            .festival-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .user-menu {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Модальные окна -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Вход</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Войти</button>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registerName">Имя</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Телефон</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerRole">Роль</label>
+                    <select id="registerRole" required>
+                        <option value="student">Ученик</option>
+                        <option value="chef">Шеф-повар</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="festivalRegistrationModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px;">Регистрация на фестиваль</h2>
+            
+            <div id="festivalRegistrationInfo">
+                <!-- Информация о фестивале будет загружена здесь -->
+            </div>
+            
+            <form id="festivalRegistrationForm">
+                <div class="form-group">
+                    <label for="festivalParticipants">Количество участников *</label>
+                    <select id="festivalParticipants" required>
+                        <option value="">Выберите количество</option>
+                        <option value="1">1 человек</option>
+                        <option value="2">2 человека</option>
+                        <option value="3">3 человека</option>
+                        <option value="4">4 человека</option>
+                        <option value="5">5+ человек</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="festivalWorkshops">Выберите мастер-классы *</label>
+                    <div id="festivalWorkshopsList">
+                        <!-- Список мастер-классов будет загружен здесь -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="festivalComments">Комментарии или пожелания</label>
+                    <textarea id="festivalComments" placeholder="Есть ли особые пожелания или диетические ограничения?"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"><i class="fas fa-utensils"></i> Cook<span>sy</span></a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="index.html" class="nav-btn">Главная</a></li>
+                        <li><a href="index.html#workshops" class="nav-btn">Мастер-классы</a></li>
+                        <li><a href="festivals.html" class="nav-btn active">Фестивали</a></li>
+                        <li><a href="index.html#booking" class="nav-btn">Бронирование</a></li>
+                        <li><a href="index.html#chefs" class="nav-btn">Шеф-повара</a></li>
+                        <li><a href="index.html#testimonials" class="nav-btn">Отзывы</a></li>
+                        <li id="authButtons">
+                            <button class="nav-btn" id="loginBtn">Войти</button>
+                            <button class="nav-btn primary" id="registerBtn">Регистрация</button>
+                        </li>
+                        <li id="userMenu" class="user-menu" style="display: none;">
+                            <button class="nav-btn">
+                                <i class="fas fa-user"></i> <span id="userName"></span>
+                            </button>
+                            <div class="user-dropdown">
+                                <a href="cabinet.html" id="cabinetLink">Личный кабинет</a>
+                                <a href="#" id="myBookingsLink">Мои бронирования</a>
+                                <button id="chatBtn">Чат с поддержкой</button>
+                                <button id="logoutBtn">Выйти</button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section class="festival-hero">
+        <div class="container">
+            <h1 class="fade-in">Кулинарные фестивали Cooksy</h1>
+            <p class="fade-in">Масштабные события, где встречаются шеф-повара, энтузиасты и все любители вкусной еды</p>
+        </div>
+    </section>
+
+    <!-- Фестивали -->
+    <section id="festivals">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши фестивали</h2>
+                <p>Присоединяйтесь к масштабным кулинарным событиям и откройте для себя новые горизонты вкуса</p>
+            </div>
+            
+            <div class="festival-tabs">
+                <button class="festival-tab active" data-tab="active">Активные</button>
+                <button class="festival-tab" data-tab="upcoming">Предстоящие</button>
+                <button class="festival-tab" data-tab="completed">Завершенные</button>
+            </div>
+            
+            <!-- Активные фестивали -->
+            <div id="active-festivals" class="festival-section active">
+                <div class="festival-grid" id="activeFestivalsList">
+                    <!-- Активные фестивали будут загружены здесь -->
+                </div>
+            </div>
+            
+            <!-- Предстоящие фестивали -->
+            <div id="upcoming-festivals" class="festival-section">
+                <div class="festival-grid" id="upcomingFestivalsList">
+                    <!-- Предстоящие фестивали будут загружены здесь -->
+                </div>
+            </div>
+            
+            <!-- Завершенные фестивали -->
+            <div id="completed-festivals" class="festival-section">
+                <div class="festival-grid" id="completedFestivalsList">
+                    <!-- Завершенные фестивали будут загружены здесь -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества фестивалей -->
+    <section id="festival-benefits" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Почему стоит участвовать в фестивалях</h2>
+                <p>Уникальные возможности, которые вы получаете на наших кулинарных событиях</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Сообщество единомышленников</h3>
+                    <p>Встречайте таких же увлеченных кулинарией людей, делитесь опытом и заводите новые знакомства</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Эксклюзивные мастер-классы</h3>
+                    <p>Только на фестивалях проводятся специальные мастер-классы, недоступные в обычном расписании</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Кулинарные соревнования</h3>
+                    <p>Участвуйте в конкурсах, демонстрируйте свои навыки и выигрывайте призы от партнеров</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Дегустации и угощения</h3>
+                    <p>Пробуйте блюда от лучших шеф-поваров и открывайте новые вкусовые сочетания</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Cooksy</h3>
+                    <p>Платформа для живых кулинарных мастер-классов и фестивалей, где каждый может учить и учиться готовить.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +7 (965) 998-70-99</li>
+                        <li><i class="fas fa-envelope"></i> arsen.pestryakov@bk.ru</li>
+                        <li><i class="fas fa-map-marker-alt"></i> г. Якутск, ул. Лермонтова, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Cooksy. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Система хранения данных для фестивалей
+        class FestivalStorage {
+            getFestivals() {
+                return JSON.parse(localStorage.getItem('cooksy_festivals') || '[]');
+            }
+            
+            saveFestival(festival) {
+                const festivals = this.getFestivals();
+                festivals.push(festival);
+                localStorage.setItem('cooksy_festivals', JSON.stringify(festivals));
+            }
+            
+            updateFestival(updatedFestival) {
+                const festivals = this.getFestivals();
+                const index = festivals.findIndex(f => f.id === updatedFestival.id);
+                if (index !== -1) {
+                    festivals[index] = updatedFestival;
+                    localStorage.setItem('cooksy_festivals', JSON.stringify(festivals));
+                }
+            }
+            
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('cooksy_current_user') || 'null');
+            }
+            
+            getUsers() {
+                return JSON.parse(localStorage.getItem('cooksy_users') || '[]');
+            }
+            
+            saveUser(user) {
+                const users = this.getUsers();
+                users.push(user);
+                localStorage.setItem('cooksy_users', JSON.stringify(users));
+            }
+            
+            findUserByEmail(email) {
+                const users = this.getUsers();
+                return users.find(user => user.email === email);
+            }
+            
+            setCurrentUser(user) {
+                localStorage.setItem('cooksy_current_user', JSON.stringify(user));
+            }
+            
+            logout() {
+                localStorage.setItem('cooksy_current_user', JSON.stringify(null));
+            }
+            
+            getFestivalRegistrations() {
+                return JSON.parse(localStorage.getItem('cooksy_festival_registrations') || '[]');
+            }
+            
+            saveFestivalRegistration(registration) {
+                const registrations = this.getFestivalRegistrations();
+                registrations.push(registration);
+                localStorage.setItem('cooksy_festival_registrations', JSON.stringify(registrations));
+            }
+        }
+
+        class FestivalApp {
+            constructor() {
+                this.storage = new FestivalStorage();
+                this.currentUser = null;
+                this.selectedFestival = null;
+                this.init();
+            }
+            
+            init() {
+                this.checkAuth();
+                this.setupEventListeners();
+                this.loadFestivals();
+                this.setupScrollAnimations();
+            }
+            
+            checkAuth() {
+                this.currentUser = this.storage.getCurrentUser();
+                this.updateUI();
+            }
+            
+            setupEventListeners() {
+                // Табы фестивалей
+                document.querySelectorAll('.festival-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        const tabName = e.target.dataset.tab;
+                        this.switchFestivalTab(tabName);
+                        
+                        // Обновляем активный класс
+                        document.querySelectorAll('.festival-tab').forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        tab.classList.add('active');
+                    });
+                });
+                
+                // Модальные окна
+                document.getElementById('loginBtn').addEventListener('click', () => this.showAuthModal());
+                document.getElementById('registerBtn').addEventListener('click', () => this.showAuthModal('register'));
+                
+                document.querySelectorAll('.close-modal').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.target.closest('.modal').classList.remove('active');
+                    });
+                });
+                
+                // Табы авторизации
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        const tabName = e.target.dataset.tab;
+                        this.switchAuthTab(tabName);
+                    });
+                });
+                
+                // Формы авторизации
+                document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
+                document.getElementById('registerForm').addEventListener('submit', (e) => this.handleRegister(e));
+                
+                // Форма регистрации на фестиваль
+                document.getElementById('festivalRegistrationForm').addEventListener('submit', (e) => this.handleFestivalRegistration(e));
+                
+                // Выход
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                
+                // Мобильное меню
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                    document.getElementById('navMenu').classList.toggle('active');
+                });
+                
+                // Закрытие модальных окон по клику вне области
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            loadFestivals() {
+                const festivals = this.storage.getFestivals();
+                
+                // Разделяем фестивали по статусу
+                const activeFestivals = festivals.filter(f => f.status === 'active');
+                const upcomingFestivals = festivals.filter(f => f.status === 'upcoming');
+                const completedFestivals = festivals.filter(f => f.status === 'completed');
+                
+                this.renderFestivals(activeFestivals, 'activeFestivalsList');
+                this.renderFestivals(upcomingFestivals, 'upcomingFestivalsList');
+                this.renderFestivals(completedFestivals, 'completedFestivalsList');
+            }
+            
+            renderFestivals(festivals, containerId) {
+                const container = document.getElementById(containerId);
+                
+                if (festivals.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-light); grid-column: 1 / -1;">
+                            <i class="fas fa-calendar-times" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>Пока нет фестивалей</h3>
+                            <p>Следите за обновлениями, скоро появятся новые события!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = festivals.map(festival => `
+                    <div class="festival-card fade-in">
+                        <div class="festival-badge ${this.getBadgeClass(festival.status)}">
+                            ${this.getStatusText(festival.status)}
+                        </div>
+                        <img src="${festival.image}" alt="${festival.name}" class="festival-img">
+                        <div class="festival-info">
+                            <h3>${festival.name}</h3>
+                            <p class="festival-description">${festival.description}</p>
+                            <div class="festival-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                ${new Date(festival.date).toLocaleDateString('ru-RU')} - ${new Date(festival.endDate).toLocaleDateString('ru-RU')}
+                            </div>
+                            <div class="festival-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${festival.location}
+                            </div>
+                            
+                            <div class="workshops-in-festival">
+                                ${this.renderWorkshopList(festival.workshops)}
+                            </div>
+                            
+                            <div class="festival-participants">
+                                <div class="participant-count">
+                                    <i class="fas fa-users"></i>
+                                    ${festival.participants} / ${festival.maxParticipants} участников
+                                </div>
+                                ${this.renderActionButton(festival)}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            renderWorkshopList(workshopIds) {
+                const workshopNames = {
+                    'italian-pasta': 'Итальянская паста',
+                    'japanese-sushi': 'Японские суши',
+                    'french-baking': 'Французская выпечка',
+                    'russian-cuisine': 'Русская кухня',
+                    'italian-pizza': 'Итальянская пицца',
+                    'french-desserts': 'Французские десерты',
+                    'vegan-cuisine': 'Веганская кухня',
+                    'chinese-cuisine': 'Китайская кухня',
+                    'indian-cuisine': 'Индийская кухня',
+                    'mexican-cuisine': 'Мексиканская кухня',
+                    'mediterranean-cuisine': 'Средиземноморская кухня',
+                    'korean-cuisine': 'Корейская кухня',
+                    'thai-cuisine': 'Тайская кухня',
+                    'bbq-grill': 'Барбекю и гриль',
+                    'kids-cooking': 'Детская кулинария',
+                    'bread-making': 'Искусство хлебопечения',
+                    'molecular-cuisine': 'Молекулярная кухня',
+                    'gluten-free-baking': 'Безглютеновая выпечка',
+                    'pan-asian-cuisine': 'Паназиатская кухня',
+                    'cheese-making': 'Искусство сыроварения',
+                    'world-cuisine': 'Кухня народов мира'
+                };
+                
+                return workshopIds.map(workshopId => `
+                    <div class="workshop-mini-card">
+                        <img src="${this.getWorkshopImage(workshopId)}" alt="${workshopNames[workshopId]}" class="workshop-mini-img">
+                        <div class="workshop-mini-info">
+                            <h4>${workshopNames[workshopId]}</h4>
+                            <p>Мастер-класс</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            getWorkshopImage(workshopId) {
+                const workshopImages = {
+                    'italian-pasta': 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80',
+                    'japanese-sushi': 'https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=80',
+                    'french-baking': 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80',
+                    'russian-cuisine': 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
+                    'italian-pizza': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'french-desserts': 'https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+                    'vegan-cuisine': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1065&q=80',
+                    'chinese-cuisine': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'indian-cuisine': 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'mexican-cuisine': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1081&q=80',
+                    'mediterranean-cuisine': 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1115&q=80',
+                    'korean-cuisine': 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1084&q=80',
+                    'thai-cuisine': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'bbq-grill': 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1122&q=80',
+                    'kids-cooking': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'bread-making': 'https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80',
+                    'molecular-cuisine': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    'gluten-free-baking': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1081&q=80',
+                    'pan-asian-cuisine': 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1115&q=80',
+                    'cheese-making': 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1084&q=80',
+                    'world-cuisine': 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
+                };
+                
+                return workshopImages[workshopId] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+            }
+            
+            renderActionButton(festival) {
+                const registrations = this.storage.getFestivalRegistrations();
+                const userRegistration = registrations.find(r => 
+                    r.userId === this.currentUser?.id && r.festivalId === festival.id
+                );
+                
+                if (userRegistration) {
+                    return `<button class="btn btn-disabled" disabled>Вы зарегистрированы</button>`;
+                }
+                
+                if (festival.status === 'completed') {
+                    return `<button class="btn btn-disabled" disabled>Фестиваль завершен</button>`;
+                }
+                
+                if (festival.participants >= festival.maxParticipants) {
+                    return `<button class="btn btn-disabled" disabled>Мест нет</button>`;
+                }
+                
+                return `<button class="btn" onclick="festivalApp.registerForFestival('${festival.id}')">Зарегистрироваться</button>`;
+            }
+            
+            getBadgeClass(status) {
+                const badgeClasses = {
+                    'active': 'badge-active',
+                    'upcoming': 'badge-upcoming',
+                    'completed': 'badge-completed'
+                };
+                return badgeClasses[status] || 'badge-upcoming';
+            }
+            
+            getStatusText(status) {
+                const statusTexts = {
+                    'active': 'Активный',
+                    'upcoming': 'Скоро',
+                    'completed': 'Завершен'
+                };
+                return statusTexts[status] || status;
+            }
+            
+            switchFestivalTab(tabName) {
+                // Скрываем все секции
+                document.querySelectorAll('.festival-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Показываем выбранную секцию
+                document.getElementById(`${tabName}-festivals`).classList.add('active');
+            }
+            
+            registerForFestival(festivalId) {
+                if (!this.currentUser) {
+                    this.showNotification('Для регистрации на фестиваль необходимо войти в систему', 'error');
+                    this.showAuthModal();
+                    return;
+                }
+                
+                const festivals = this.storage.getFestivals();
+                this.selectedFestival = festivals.find(f => f.id === festivalId);
+                
+                if (!this.selectedFestival) {
+                    this.showNotification('Фестиваль не найден', 'error');
+                    return;
+                }
+                
+                this.showFestivalRegistrationModal();
+            }
+            
+            showFestivalRegistrationModal() {
+                const modal = document.getElementById('festivalRegistrationModal');
+                const infoContainer = document.getElementById('festivalRegistrationInfo');
+                const workshopsContainer = document.getElementById('festivalWorkshopsList');
+                
+                // Заполняем информацию о фестивале
+                infoContainer.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <h3>${this.selectedFestival.name}</h3>
+                        <p>${this.selectedFestival.description}</p>
+                        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px; font-size: 14px;">
+                            <div><i class="fas fa-calendar-alt"></i> ${new Date(this.selectedFestival.date).toLocaleDateString('ru-RU')}</div>
+                            <div><i class="fas fa-map-marker-alt"></i> ${this.selectedFestival.location}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Заполняем список мастер-классов
+                const workshopNames = {
+                    'italian-pasta': 'Итальянская паста',
+                    'japanese-sushi': 'Японские суши',
+                    'french-baking': 'Французская выпечка',
+                    'russian-cuisine': 'Русская кухня',
+                    'italian-pizza': 'Итальянская пицца',
+                    'french-desserts': 'Французские десерты',
+                    'vegan-cuisine': 'Веганская кухня',
+                    'chinese-cuisine': 'Китайская кухня',
+                    'indian-cuisine': 'Индийская кухня',
+                    'mexican-cuisine': 'Мексиканская кухня',
+                    'mediterranean-cuisine': 'Средиземноморская кухня',
+                    'korean-cuisine': 'Корейская кухня',
+                    'thai-cuisine': 'Тайская кухня',
+                    'bbq-grill': 'Барбекю и гриль',
+                    'kids-cooking': 'Детская кулинария',
+                    'bread-making': 'Искусство хлебопечения',
+                    'molecular-cuisine': 'Молекулярная кухня',
+                    'gluten-free-baking': 'Безглютеновая выпечка',
+                    'pan-asian-cuisine': 'Паназиатская кухня',
+                    'cheese-making': 'Искусство сыроварения',
+                    'world-cuisine': 'Кухня народов мира'
+                };
+                
+                workshopsContainer.innerHTML = this.selectedFestival.workshops.map(workshopId => `
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="checkbox" id="workshop-${workshopId}" name="workshops" value="${workshopId}" checked>
+                        <label for="workshop-${workshopId}">${workshopNames[workshopId]}</label>
+                    </div>
+                `).join('');
+                
+                modal.classList.add('active');
+            }
+            
+            handleFestivalRegistration(e) {
+                e.preventDefault();
+                
+                if (!this.currentUser || !this.selectedFestival) {
+                    this.showNotification('Ошибка регистрации', 'error');
+                    return;
+                }
+                
+                const participants = document.getElementById('festivalParticipants').value;
+                const workshops = Array.from(document.querySelectorAll('input[name="workshops"]:checked'))
+                    .map(input => input.value);
+                const comments = document.getElementById('festivalComments').value;
+                
+                if (!participants || workshops.length === 0) {
+                    this.showNotification('Заполните все обязательные поля', 'error');
+                    return;
+                }
+                
+                // Создаем регистрацию
+                const registration = {
+                    id: 'FREG' + Date.now(),
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    festivalId: this.selectedFestival.id,
+                    festivalName: this.selectedFestival.name,
+                    participants: parseInt(participants),
+                    workshops: workshops,
+                    comments: comments,
+                    status: 'confirmed',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Сохраняем регистрацию
+                this.storage.saveFestivalRegistration(registration);
+                
+                // Обновляем количество участников фестиваля
+                const festivals = this.storage.getFestivals();
+                const festivalIndex = festivals.findIndex(f => f.id === this.selectedFestival.id);
+                if (festivalIndex !== -1) {
+                    festivals[festivalIndex].participants += parseInt(participants);
+                    this.storage.updateFestival(festivals[festivalIndex]);
+                }
+                
+                // Закрываем модальное окно
+                document.getElementById('festivalRegistrationModal').classList.remove('active');
+                
+                // Показываем уведомление
+                this.showNotification(`Вы успешно зарегистрированы на фестиваль "${this.selectedFestival.name}"!`, 'success');
+                
+                // Перезагружаем фестивали
+                this.loadFestivals();
+            }
+            
+            showAuthModal(defaultTab = 'login') {
+                const modal = document.getElementById('authModal');
+                modal.classList.add('active');
+                this.switchAuthTab(defaultTab);
+            }
+            
+            switchAuthTab(tabName) {
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabName);
+                });
+                
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.toggle('active', form.id === `${tabName}Form`);
+                });
+            }
+            
+            handleLogin(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                const user = this.storage.findUserByEmail(email);
+                
+                if (!user) {
+                    this.showNotification('Пользователь с таким email не найден', 'error');
+                    return;
+                }
+                
+                if (user.password !== password) {
+                    this.showNotification('Неверный пароль', 'error');
+                    return;
+                }
+                
+                this.storage.setCurrentUser(user);
+                this.currentUser = user;
+                this.updateUI();
+                document.getElementById('authModal').classList.remove('active');
+                this.showNotification(`Добро пожаловать, ${user.name}!`, 'success');
+                document.getElementById('loginForm').reset();
+                
+                // Перезагружаем фестивали для обновления кнопок
+                this.loadFestivals();
+            }
+            
+            handleRegister(e) {
+                e.preventDefault();
+                
+                const userData = {
+                    id: Date.now().toString(),
+                    name: document.getElementById('registerName').value,
+                    email: document.getElementById('registerEmail').value,
+                    phone: document.getElementById('registerPhone').value,
+                    password: document.getElementById('registerPassword').value,
+                    role: document.getElementById('registerRole').value,
+                    createdAt: new Date().toISOString()
+                };
+                
+                if (this.storage.findUserByEmail(userData.email)) {
+                    this.showNotification('Пользователь с таким email уже существует', 'error');
+                    return;
+                }
+                
+                this.storage.saveUser(userData);
+                this.storage.setCurrentUser(userData);
+                this.currentUser = userData;
+                this.updateUI();
+                document.getElementById('authModal').classList.remove('active');
+                this.showNotification('Регистрация прошла успешно!', 'success');
+                document.getElementById('registerForm').reset();
+                
+                // Перезагружаем фестивали для обновления кнопок
+                this.loadFestivals();
+            }
+            
+            logout() {
+                this.storage.logout();
+                this.currentUser = null;
+                this.updateUI();
+                this.showNotification('Вы вышли из системы', 'success');
+                
+                // Перезагружаем фестивали для обновления кнопок
+                this.loadFestivals();
+            }
+            
+            updateUI() {
+                const authButtons = document.getElementById('authButtons');
+                const userMenu = document.getElementById('userMenu');
+                
+                if (this.currentUser) {
+                    authButtons.style.display = 'none';
+                    userMenu.style.display = 'block';
+                    document.getElementById('userName').textContent = this.currentUser.name;
+                } else {
+                    authButtons.style.display = 'block';
+                    userMenu.style.display = 'none';
+                }
+            }
+            
+            setupScrollAnimations() {
+                const fadeElements = document.querySelectorAll('.fade-in');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = 1;
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                fadeElements.forEach(el => {
+                    el.style.opacity = 0;
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    observer.observe(el);
+                });
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${type} show`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', () => {
+            window.festivalApp = new FestivalApp();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooksy - Кулинарные мастер-классы</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #9f9c81;
+            --primary-dark: #2980b9;
+            --secondary: #48515a;
+            --accent: #f39c12;
+            --light: #f9f9f9;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success: #27ae60;
+            --warning: #f1c40f;
+            --error: #e74c3c;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Шапка с фото */
+        header {
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .nav-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .left-nav {
+            justify-content: flex-start;
+            flex: 1;
+        }
+
+        .right-nav {
+            justify-content: flex-end;
+            flex: 1;
+        }
+
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--white);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Стили для закругленных кнопок - видимые изначально */
+        .nav-btn {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.primary {
+            background: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--white);
+        }
+
+        .nav-btn.primary:hover {
+            background: #1e3349;
+            transform: translateY(-2px);
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .user-menu:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a, .user-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover, .user-dropdown button:hover {
+            background: #f8f9fa;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+            /* Стили для быстрых подсказок чата */
+        .quick-suggestions {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-btn {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .suggestion-btn:hover {
+            background: #2196f3;
+            color: white;
+        }
+
+        /* Стиль для сообщений ИИ */
+        .message-ai {
+            background: #e8f5e8;
+            border-left: 4px solid var(--success);
+        }
+        /* Стили для герой-секции */
+        .hero {
+            background: linear-gradient(rgba(102, 102, 102, 0.8), rgba(46, 53, 61, 0.8)), url('WhatsApp Image 2025-10-19 at 10.33.23.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--secondary);
+        }
+
+        /* Секции */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 20px auto 0;
+        }
+
+        /* Особенности */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        /* Мастер-классы */
+        .workshops-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .workshop-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .workshop-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .workshop-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .workshop-info {
+            padding: 20px;
+        }
+
+        .workshop-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .workshop-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .workshop-rating {
+            color: var(--accent);
+        }
+
+        .workshop-description {
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .workshop-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background-color: #e8f4fc;
+            color: var(--secondary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .workshop-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Бронирование */
+        .booking-section {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+
+        .booking-form {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .booking-form h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .booking-info h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .booking-info p {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .benefits-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .benefits-list i {
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Шеф-повара */
+        .chefs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .chef-card {
+            text-align: center;
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .chef-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid var(--primary);
+        }
+
+        .chef-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .chef-card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        /* Отзывы */
+        .testimonials {
+            background-color: #f8f9fa;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 60px;
+            color: #f0f0f0;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .testimonial-info h4 {
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .testimonial-info p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Стили для формы отзывов */
+        .review-form {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .review-form h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .rating-star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .rating-star:hover,
+        .rating-star.active {
+            color: var(--accent);
+        }
+
+        .review-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-author {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .review-date {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .review-actions {
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* Стили для уведомлений */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            box-shadow: var(--shadow);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--error);
+        }
+
+        .notification.warning {
+            background-color: var(--warning);
+            color: var(--text);
+        }
+
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        /* Стили для чата */
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message.own {
+            background: #e3f2fd;
+            margin-left: 50px;
+        }
+
+        .message.other {
+            background: #f5f5f5;
+            margin-right: 50px;
+        }
+
+        .message-system {
+            background: #fff3e0;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .nav-group {
+                display: none;
+            }
+            
+            .auth-section {
+                display: none;
+            }
+            
+            .header-content {
+                justify-content: center;
+                position: relative;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .logo-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <!-- Левая группа кнопок -->
+                <div class="nav-group">
+                    <a href="#home" class="nav-btn">Главная</a>
+                    <a href="#features" class="nav-btn">Преимущества</a>
+                    <a href="#workshops" class="nav-btn">Мастер-классы</a>
+                </div>
+                
+                <!-- Ваше фото вместо логотипа -->
+                <div class="logo-container">
+                    <!-- ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА ПУТЬ К ВАШЕМУ ИЗОБРАЖЕНИЮ -->
+                    <img src="WhatsApp Image 2025-10-18 at 21.25.58.jpeg" alt="Ваше фото" class="logo-image">
+                </div>
+                
+                <!-- Правая группа кнопок -->
+                <div class="nav-group">
+                    <a href="#booking" class="nav-btn">Бронирование</a>
+                    <a href="festival.html" class="nav-btn">Фестиваль</a>
+                </div>
+                
+                <!-- Кнопки авторизации и меню пользователя -->
+                <div class="auth-section">
+                    <div id="authButtons">
+                        <button class="nav-btn" id="loginBtn">Войти</button>
+                        <button class="nav-btn primary" id="registerBtn">Регистрация</button>
+                    </div>
+                    <div id="userMenu" class="user-menu" style="display: none;">
+                        <button class="nav-btn">
+                            <i class="fas fa-user"></i> <span id="userName"></span>
+                        </button>
+                        <div class="user-dropdown">
+                            <a href="cabinet.html" id="cabinetLink">Личный кабинет</a>
+                            <a href="#" id="myBookingsLink">Мои бронирования</a>
+                            <button id="chatBtn">Чат с поддержкой</button>
+                            <button id="logoutBtn">Выйти</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1 class="fade-in">Научитесь готовить у лучших шефов</h1>
+            <p class="fade-in">Живые кулинарные мастер-классы, где каждый может учить и учиться. Прямое общение, обмен опытом и вкусная еда.</p>
+            <a href="#booking" class="btn fade-in">Забронировать мастер-класс</a>
+            <a href="#workshops" class="btn btn-outline fade-in">Смотреть мастер-классы</a>
+        </div>
+    </section>
+
+    <!-- Особенности -->
+    <section id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Почему выбирают Cooksy</h2>
+                <p>Уникальная платформа для живого кулинарного общения</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Живое общение</h3>
+                    <p>Прямые встречи с шефами и единомышленниками, а не онлайн-курсы</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Без посредников</h3>
+                    <p>Общайтесь напрямую с преподавателями, договаривайтесь о удобном времени</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Безопасность</h3>
+                    <p>Верификация пользователей, система рейтингов и безопасные платежи</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Для всех уровней</h3>
+                    <p>От начинающих до продвинутых - найдется мастер-класс для каждого</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Мастер-классы -->
+    <section id="workshops">
+        <div class="container">
+            <div class="section-title">
+                <h2>Популярные мастер-классы</h2>
+                <p>Выберите направление, которое вас интересует. Все мастер-классы стоят 250 рублей</p>
+            </div>
+            <div class="workshops-grid">
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80" alt="Итальянская кухня" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Итальянская паста</h3>
+                        <div class="workshop-meta">
+                            <span>Итальянская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <p class="workshop-description">Научитесь готовить 3 вида пасты с разными соусами от шефа из Рима</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">3 часа</span>
+                            <span class="feature-tag">До 6 человек</span>
+                            <span class="feature-tag">Для начинающих</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Итальянская паста')">Забронировать</button>
+                    </div>
+                </div>
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1050&q=80" alt="Суши мастер-класс" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Японские суши</h3>
+                        <div class="workshop-meta">
+                            <span>Японская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <p class="workshop-description">Освойте искусство приготовления суши и роллов с профессиональным суши-шефом</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">4 часа</span>
+                            <span class="feature-tag">До 8 человек</span>
+                            <span class="feature-tag">Средний уровень</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Японские суши')">Забронировать</button>
+                    </div>
+                </div>
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80" alt="Французская выпечка" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Французская выпечка</h3>
+                        <div class="workshop-meta">
+                            <span>Французская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <p class="workshop-description">Научитесь готовить круассаны, эклеры и тарталетки как в парижских пекарнях</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">5 часов</span>
+                            <span class="feature-tag">До 5 человек</span>
+                            <span class="feature-tag">Продвинутый уровень</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Французская выпечка')">Забронировать</button>
+                    </div>
+                </div>
+                <!-- Новые мастер-классы -->
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Русская кухня" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Русская кухня</h3>
+                        <div class="workshop-meta">
+                            <span>Русская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.6</span>
+                        </div>
+                        <p class="workshop-description">Пельмени, борщ и блины - освоим традиционные блюда русской кухни</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">4 часа</span>
+                            <span class="feature-tag">До 8 человек</span>
+                            <span class="feature-tag">Для начинающих</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Русская кухня')">Забронировать</button>
+                    </div>
+                </div>
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Пицца" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Итальянская пицца</h3>
+                        <div class="workshop-meta">
+                            <span>Итальянская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <p class="workshop-description">Научитесь готовить настоящую неаполитанскую пиццу в дровяной печи</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">3 часа</span>
+                            <span class="feature-tag">До 6 человек</span>
+                            <span class="feature-tag">Средний уровень</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Итальянская пицца')">Забронировать</button>
+                    </div>
+                </div>
+                <div class="workshop-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" alt="Десерты" class="workshop-img">
+                    <div class="workshop-info">
+                        <h3>Французские десерты</h3>
+                        <div class="workshop-meta">
+                            <span>Французская кухня</span>
+                            <span class="workshop-rating"><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <p class="workshop-description">Макаруны, крем-брюле и профитроли - изысканные десерты как в Париже</p>
+                        <div class="workshop-features">
+                            <span class="feature-tag">5 часов</span>
+                            <span class="feature-tag">До 4 человек</span>
+                            <span class="feature-tag">Продвинутый уровень</span>
+                        </div>
+                        <div class="workshop-price">250 руб.</div>
+                        <button class="btn" style="width: 100%; text-align: center;" onclick="selectWorkshop('Французские десерты')">Забронировать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Бронирование -->
+    <section class="booking-section" id="booking">
+        <div class="container">
+            <div class="booking-container">
+                <div class="booking-info fade-in">
+                    <h3>Забронируйте мастер-класс</h3>
+                    <p>Выберите интересующий вас мастер-класс, удобное время и количество участников. Мы свяжемся с вами для подтверждения брони.</p>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-check-circle"></i> Прямое общение с шеф-поваром</li>
+                        <li><i class="fas fa-check-circle"></i> Все ингредиенты включены в стоимость</li>
+                        <li><i class="fas fa-check-circle"></i> Небольшие группы для лучшего обучения</li>
+                        <li><i class="fas fa-check-circle"></i> Рецепты и сертификат в подарок</li>
+                    </ul>
+                </div>
+                <div class="booking-form fade-in">
+                    <h3>Форма бронирования</h3>
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="workshop">Мастер-класс *</label>
+                            <select id="workshop" required>
+                                <option value="">Выберите мастер-класс</option>
+                                <option value="italian-pasta">Итальянская паста - 250 руб.</option>
+                                <option value="japanese-sushi">Японские суши - 250 руб.</option>
+                                <option value="french-baking">Французская выпечка - 250 руб.</option>
+                                <option value="russian-cuisine">Русская кухня - 250 руб.</option>
+                                <option value="italian-pizza">Итальянская пицца - 250 руб.</option>
+                                <option value="french-desserts">Французские десерты - 250 руб.</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Дата *</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Время *</label>
+                            <select id="time" required>
+                                <option value="">Выберите время</option>
+                                <option value="10:00">10:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="participants">Количество участников *</label>
+                            <select id="participants" required>
+                                <option value="">Выберите количество</option>
+                                <option value="1">1 человек</option>
+                                <option value="2">2 человека</option>
+                                <option value="3">3 человека</option>
+                                <option value="4">4 человека</option>
+                                <option value="5">5+ человек</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Адрес проведения *</label>
+                            <input type="text" id="address" placeholder="Введите адрес проведения мастер-класса" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Ваше имя *</label>
+                            <input type="text" id="name" placeholder="Введите ваше имя" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phone" placeholder="Введите ваш телефон" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Уровень подготовки</label>
+                            <select id="experience">
+                                <option value="beginner">Начинающий</option>
+                                <option value="intermediate">Средний</option>
+                                <option value="advanced">Продвинутый</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Перейти к оплате</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Шеф-повара -->
+    <section id="chefs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наши шеф-повара</h2>
+                <p>Профессионалы, которые делятся своим опытом</p>
+            </div>
+            <div class="chefs-grid">
+                <div class="chef-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="Айсен Иванова">
+                    <h3>Айсен Иванов</h3>
+                    <p>Шеф-повар итальянской кухни</p>
+                    <p>Опыт: 8 лет</p>
+                    <p>Рейтинг: <i class="fas fa-star"></i> 4.9</p>
+                </div>
+                <div class="chef-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1313&q=80" alt="Алексей Петров">
+                    <h3>Алексей Петров</h3>
+                    <p>Суши-шеф</p>
+                    <p>Опыт: 6 лет</p>
+                    <p>Рейтинг: <i class="fas fa-star"></i> 4.8</p>
+                </div>
+                <div class="chef-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Ольга Сидорова">
+                    <h3>Ольга Сидорова</h3>
+                    <p>Кондитер, специалист по французской выпечке</p>
+                    <p>Опыт: 10 лет</p>
+                    <p>Рейтинг: <i class="fas fa-star"></i> 4.9</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Отзывы участников</h2>
+                <p>Что говорят наши гости о мастер-классах</p>
+            </div>
+            
+            <!-- Форма отзыва -->
+            <div class="review-form" id="reviewFormContainer" style="display: none;">
+                <h3>Оставить отзыв</h3>
+                <form id="addReviewForm">
+                    <div class="form-group">
+                        <label>Выберите мастер-класс</label>
+                        <select id="reviewWorkshop" required>
+                            <option value="">Выберите мастер-класс</option>
+                            <option value="italian-pasta">Итальянская паста</option>
+                            <option value="japanese-sushi">Японские суши</option>
+                            <option value="french-baking">Французская выпечка</option>
+                            <option value="russian-cuisine">Русская кухня</option>
+                            <option value="italian-pizza">Итальянская пицца</option>
+                            <option value="french-desserts">Французские десерты</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ваша оценка</label>
+                        <div class="rating-stars" id="addReviewStars">
+                            <span class="rating-star" data-rating="1">★</span>
+                            <span class="rating-star" data-rating="2">★</span>
+                            <span class="rating-star" data-rating="3">★</span>
+                            <span class="rating-star" data-rating="4">★</span>
+                            <span class="rating-star" data-rating="5">★</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="addReviewText">Текст отзыва</label>
+                        <textarea id="addReviewText" placeholder="Поделитесь вашими впечатлениями..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Опубликовать отзыв</button>
+                </form>
+            </div>
+            
+            <!-- Список отзывов -->
+            <div class="reviews-section">
+                <div id="reviewsList">
+                    <!-- Отзывы будут загружены здесь -->
+                </div>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">Отличный мастер-класс по итальянской пасте! Мария не только научила готовить, но и рассказала много интересного об итальянской кухне. Обязательно приду еще!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Анна" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Анна К.</h4>
+                            <p>Участница мастер-класса "Итальянская паста"</p>
+                            <div class="workshop-rating"><i class="fas fa-star"></i> 5.0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">Никогда не думал, что смогу сам приготовить суши. Алексей все очень доступно объяснил, теперь регулярно готовлю дома. Спасибо за прекрасный опыт!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Дмитрий" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Дмитрий С.</h4>
+                            <p>Участник мастер-класса "Японские суши"</p>
+                            <div class="workshop-rating"><i class="fas fa-star"></i> 4.5</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">Круассаны получились не хуже, чем в Париже! Ольга - потрясающий преподаватель, который действительно любит свое дело. Рекомендую всем!</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ольга" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h4>Ольга М.</h4>
+                            <p>Участница мастер-класса "Французская выпечка"</p>
+                            <div class="workshop-rating"><i class="fas fa-star"></i> 5.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Cooksy</h3>
+                    <p>Платформа для живых кулинарных мастер-классов, где каждый может учить и учиться готовить.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +7 (999) 123-45-67</li>
+                        <li><i class="fas fa-envelope"></i> info@cooksy.ru</li>
+                        <li><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Кулинарная, 15</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Cooksy. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно авторизации -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 30px;">Вход в систему</h2>
+            
+            <div class="auth-tabs" style="display: flex; margin-bottom: 20px;">
+                <button class="auth-tab active" data-tab="login" style="flex: 1; padding: 10px; border: none; background: #f5f5f5; cursor: pointer;">Вход</button>
+                <button class="auth-tab" data-tab="register" style="flex: 1; padding: 10px; border: none; background: #f5f5f5; cursor: pointer;">Регистрация</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Войти</button>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registerName">Имя</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Телефон</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerRole">Роль</label>
+                    <select id="registerRole" required>
+                        <option value="student">Ученик</option>
+                        <option value="chef">Шеф-повар</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно оплаты -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 30px;">Оплата мастер-класса</h2>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 id="paymentWorkshopName">Мастер-класс</h4>
+                <div style="font-size: 24px; font-weight: bold; color: var(--success);" id="paymentPrice">250 руб.</div>
+            </div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label>Способ оплаты</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <div class="payment-method selected" style="flex: 1; text-align: center; padding: 15px; border: 2px solid var(--primary); border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-credit-card" style="font-size: 24px; margin-bottom: 10px;"></i>
+                            <div>Карта</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardNumber">Номер карты</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="cardExpiry">Срок действия</label>
+                        <input type="text" id="cardExpiry" placeholder="ММ/ГГ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardCvc">CVC</label>
+                        <input type="text" id="cardCvc" placeholder="123" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardHolder">Имя владельца</label>
+                    <input type="text" id="cardHolder" placeholder="IVAN IVANOV" required>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Оплатить 250 руб.</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно чата -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px;">Чат с ИИ-помощником</h2>
+        
+            <!-- Быстрые подсказки -->
+            <div class="quick-suggestions" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 8px;">
+                <button class="suggestion-btn" data-question="Какие мастер-классы есть?">Мастер-классы</button>
+                <button class="suggestion-btn" data-question="Как забронировать?">Бронирование</button>
+                <button class="suggestion-btn" data-question="Сколько стоит?">Стоимость</button>
+                <button class="suggestion-btn" data-question="Как отменить?">Отмена</button>
+            </div>
+        
+            <div class="chat-messages" id="chatMessages">
+                <!-- Сообщения будут здесь -->
+            </div>
+        
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chatInput" placeholder="Задайте вопрос ИИ-помощнику..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                <button id="sendMessage" class="btn">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Система хранения данных
+        class StorageSystem {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                if (!localStorage.getItem('cooksy_users')) {
+                    localStorage.setItem('cooksy_users', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('cooksy_bookings')) {
+                    localStorage.setItem('cooksy_bookings', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('cooksy_messages')) {
+                    const initialMessages = [{
+                        id: '1',
+                        userId: 'support',
+                        userName: 'Поддержка Cooksy',
+                        text: 'Добро пожаловать в чат поддержки Cooksy! Мы онлайн и готовы помочь вам.',
+                        timestamp: new Date().toISOString()
+                    }];
+                    localStorage.setItem('cooksy_messages', JSON.stringify(initialMessages));
+                }
+                if (!localStorage.getItem('cooksy_current_user')) {
+                    localStorage.setItem('cooksy_current_user', JSON.stringify(null));
+                }
+                if (!localStorage.getItem('cooksy_reviews')) {
+                    localStorage.setItem('cooksy_reviews', JSON.stringify([]));
+                }
+                if (!localStorage.getItem('cooksy_payments')) {
+                    localStorage.setItem('cooksy_payments', JSON.stringify([]));
+                }
+            }
+            
+            getUsers() {
+                return JSON.parse(localStorage.getItem('cooksy_users') || '[]');
+            }
+            
+            saveUser(user) {
+                const users = this.getUsers();
+                users.push(user);
+                localStorage.setItem('cooksy_users', JSON.stringify(users));
+            }
+            
+            findUserByEmail(email) {
+                const users = this.getUsers();
+                return users.find(user => user.email === email);
+            }
+            
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('cooksy_current_user') || 'null');
+            }
+            
+            setCurrentUser(user) {
+                localStorage.setItem('cooksy_current_user', JSON.stringify(user));
+            }
+            
+            logout() {
+                localStorage.setItem('cooksy_current_user', JSON.stringify(null));
+            }
+            
+            getMessages() {
+                return JSON.parse(localStorage.getItem('cooksy_messages') || '[]');
+            }
+            
+            saveMessage(message) {
+                const messages = this.getMessages();
+                messages.push(message);
+                localStorage.setItem('cooksy_messages', JSON.stringify(messages));
+            }
+            
+            getBookings() {
+                return JSON.parse(localStorage.getItem('cooksy_bookings') || '[]');
+            }
+            
+            saveBooking(booking) {
+                const bookings = this.getBookings();
+                bookings.push(booking);
+                localStorage.setItem('cooksy_bookings', JSON.stringify(bookings));
+            }
+            
+            getReviews() {
+                return JSON.parse(localStorage.getItem('cooksy_reviews') || '[]');
+            }
+            
+            saveReview(review) {
+                const reviews = this.getReviews();
+                reviews.push(review);
+                localStorage.setItem('cooksy_reviews', JSON.stringify(reviews));
+            }
+            
+            getPayments() {
+                return JSON.parse(localStorage.getItem('cooksy_payments') || '[]');
+            }
+            
+            savePayment(payment) {
+                const payments = this.getPayments();
+                payments.push(payment);
+                localStorage.setItem('cooksy_payments', JSON.stringify(payments));
+            }
+        }
+
+        // Класс ИИ-помощника
+    class CooksyAI {
+        constructor() {
+            this.knowledgeBase = {
+                'привет': [
+                    "Привет! Я ваш помощник Cooksy. Чем могу помочь?",
+                    "Здравствуйте! Рад вас видеть. Какой вопрос вас интересует?",
+                    "Приветствую! Готов ответить на ваши вопросы о мастер-классах."
+                ],
+                'мастер-класс': [
+                    "У нас есть мастер-классы по итальянской, японской, французской и русской кухне. Все стоят 250 рублей.",
+                    "Мастер-классы проводят профессиональные шеф-повара. Длительность от 3 до 5 часов.",
+                    "Каждый мастер-класс включает все ингредиенты и рецепты в подарок."
+                ],
+                'бронирование': [
+                    "Для бронирования выберите мастер-класс, дату и время на странице бронирования.",
+                    "После бронирования вам нужно будет оплатить мастер-класс онлайн.",
+                    "Вы можете отменить бронирование в личном кабинете."
+                ],
+                'оплата': [
+                    "Мы принимаем оплату банковскими картами. Все платежи защищены.",
+                    "Стоимость любого мастер-класса - 250 рублей.",
+                    "После оплаты вы получите подтверждение на email."
+                ],
+                'отмена': [
+                    "Вы можете отменить бронирование за 24 часа до начала.",
+                    "Для отмены зайдите в личный кабинет и нажмите 'Отменить' рядом с бронированием.",
+                    "При отмене менее чем за 24 часа средства не возвращаются."
+                ],
+                'шеф': [
+                    "Наши шеф-повара - профессионалы с опытом от 6 до 10 лет.",
+                    "Все шеф-повара проходят строгий отбор и имеют высокие рейтинги.",
+                    "Вы можете посмотреть профили шеф-поваров в соответствующем разделе."
+                ],
+                'рейтинг': [
+                    "Рейтинги основаны на реальных отзывах участников мастер-классов.",
+                    "Средний рейтинг наших мастер-классов - 4.8 из 5.",
+                    "Вы можете оставить свой отзыв после посещения мастер-класса."
+                ],
+                'контакты': [
+                    "Наша поддержка: +7 (999) 123-45-67, info@cooksy.ru",
+                    "Мы онлайн с 9:00 до 21:00 ежедневно.",
+                    "Также вы можете написать нам в этом чате в любое время."
+                ],
+                'спасибо': [
+                    "Пожалуйста! Обращайтесь, если возникнут ещё вопросы.",
+                    "Рад был помочь! Удачного дня!",
+                    "Всегда к вашим услугам! Приятного аппетита!"
+                ],
+                'помощь': [
+                    "Я могу помочь с информацией о мастер-классах, бронировании, оплате, шеф-поварах.",
+                    "Задайте вопрос о мастер-классах, бронировании или оплате.",
+                    "Чем конкретно я могу вам помочь?"
+                ]
+            };
+        
+            this.defaultResponses = [
+                "Интересный вопрос! Уточните, пожалуйста, что именно вас интересует?",
+                "Пока я могу помочь с вопросами о мастер-классах, бронировании и оплате.",
+                "Не совсем понял ваш вопрос. Можете переформулировать?",
+                "Попробуйте спросить о мастер-классах, бронировании или наших шеф-поварах."
+            ];
+        }
+    
+        processMessage(message) {
+            const lowerMessage = message.toLowerCase();
+        
+            // Поиск ключевых слов в сообщении
+            for (const [keyword, responses] of Object.entries(this.knowledgeBase)) {
+                if (lowerMessage.includes(keyword)) {
+                    return this.getRandomResponse(responses);
+                }
+            }
+        
+            // Проверка на приветствие
+            if (this.isGreeting(lowerMessage)) {
+                return this.getRandomResponse(this.knowledgeBase['привет']);
+            }
+        
+            // Проверка на благодарность
+            if (this.isThanks(lowerMessage)) {
+                return this.getRandomResponse(this.knowledgeBase['спасибо']);
+            }
+        
+            // Дефолтный ответ
+            return this.getRandomResponse(this.defaultResponses);
+        }
+    
+        isGreeting(message) {
+            const greetings = ['привет', 'здравствуй', 'добрый', 'hello', 'hi', 'хай'];
+            return greetings.some(greeting => message.includes(greeting));
+        }
+    
+        isThanks(message) {
+            const thanks = ['спасибо', 'благодарю', 'thanks', 'thank you'];
+            return thanks.some(thank => message.includes(thank));
+        }
+    
+        getRandomResponse(responses) {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+    
+        // Метод для обучения ИИ (можно расширять базу знаний)
+        learnNewResponse(keyword, response) {
+            if (!this.knowledgeBase[keyword]) {
+                this.knowledgeBase[keyword] = [];
+            }
+            this.knowledgeBase[keyword].push(response);
+        }
+    }
+
+        // Основной класс приложения
+        class CooksyApp {
+            constructor() {
+                this.storage = new StorageSystem();
+                this.aiAssistant = new CooksyAI();
+                this.currentUser = null;
+                this.selectedWorkshop = null;
+                this.currentRating = 0;
+                this.init();
+            }
+            
+            init() {
+                this.checkAuth();
+                this.setupEventListeners();
+                this.setupBookingForm();
+                this.setupPaymentSystem();
+                this.setupReviewSystem();
+                this.setupScrollAnimations();
+                this.loadReviews();
+            }
+            
+            checkAuth() {
+                this.currentUser = this.storage.getCurrentUser();
+                this.updateUI();
+            }
+            
+            setupEventListeners() {
+                // Модальные окна
+                document.getElementById('loginBtn').addEventListener('click', () => this.showAuthModal());
+                document.getElementById('registerBtn').addEventListener('click', () => this.showAuthModal('register'));
+                
+                document.querySelectorAll('.close-modal').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.target.closest('.modal').classList.remove('active');
+                    });
+                });
+                
+                // Табы авторизации
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        const tabName = e.target.dataset.tab;
+                        this.switchAuthTab(tabName);
+                    });
+                });
+                
+                // Формы авторизации
+                document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
+                document.getElementById('registerForm').addEventListener('submit', (e) => this.handleRegister(e));
+                
+                // Чат
+                document.getElementById('chatBtn').addEventListener('click', () => this.showChatModal());
+                document.getElementById('sendMessage').addEventListener('click', () => this.sendMessage());
+                document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                
+                // Выход
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                
+                // Мобильное меню
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                    document.getElementById('navMenu').classList.toggle('active');
+                });
+                
+                // Закрытие модальных окон по клику вне области
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+                document.querySelectorAll('.suggestion-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const question = btn.dataset.question;
+                        document.getElementById('chatInput').value = question;
+                        document.getElementById('sendMessage').click();
+                    });
+                });
+            }
+            
+            setupBookingForm() {
+                const bookingForm = document.getElementById('bookingForm');
+                if (bookingForm) {
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('date').setAttribute('min', today);
+                    
+                    bookingForm.addEventListener('submit', (e) => this.handleBooking(e));
+                }
+            }
+            
+            setupPaymentSystem() {
+                // Выбор способа оплаты
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.addEventListener('click', () => {
+                        document.querySelectorAll('.payment-method').forEach(m => {
+                            m.classList.remove('selected');
+                        });
+                        method.classList.add('selected');
+                    });
+                });
+                
+                // Форма оплаты
+                document.getElementById('paymentForm').addEventListener('submit', (e) => this.handlePayment(e));
+                
+                // Форматирование номера карты
+                document.getElementById('cardNumber').addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let matches = value.match(/\d{4,16}/g);
+                    let match = matches && matches[0] || '';
+                    let parts = [];
+                    
+                    for (let i = 0; i < match.length; i += 4) {
+                        parts.push(match.substring(i, i + 4));
+                    }
+                    
+                    if (parts.length) {
+                        e.target.value = parts.join(' ');
+                    } else {
+                        e.target.value = value;
+                    }
+                });
+                
+                // Форматирование срока действия
+                document.getElementById('cardExpiry').addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                });
+            }
+            
+            setupReviewSystem() {
+                // Звезды рейтинга в форме отзыва
+                document.querySelectorAll('#addReviewStars .rating-star').forEach(star => {
+                    star.addEventListener('click', () => {
+                        const rating = parseInt(star.dataset.rating);
+                        this.setRating('addReviewStars', rating);
+                    });
+                    
+                    star.addEventListener('mouseover', () => {
+                        const rating = parseInt(star.dataset.rating);
+                        const stars = document.querySelectorAll('#addReviewStars .rating-star');
+                        stars.forEach((s, index) => {
+                            if (index < rating) {
+                                s.style.color = 'var(--accent)';
+                            }
+                        });
+                    });
+                    
+                    star.addEventListener('mouseout', () => {
+                        const stars = document.querySelectorAll('#addReviewStars .rating-star');
+                        stars.forEach((s, index) => {
+                            if (!s.classList.contains('active')) {
+                                s.style.color = '#ddd';
+                            }
+                        });
+                    });
+                });
+                
+                // Форма отзыва
+                document.getElementById('addReviewForm').addEventListener('submit', (e) => this.handleReviewSubmit(e));
+            }
+            
+            setRating(containerId, rating) {
+                const stars = document.querySelectorAll(`#${containerId} .rating-star`);
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+                this.currentRating = rating;
+            }
+            
+            setupScrollAnimations() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        if (targetId === '#') return;
+                        
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                            
+                            document.getElementById('navMenu').classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            showAuthModal(defaultTab = 'login') {
+                const modal = document.getElementById('authModal');
+                modal.classList.add('active');
+                this.switchAuthTab(defaultTab);
+            }
+            
+            switchAuthTab(tabName) {
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabName);
+                });
+                
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.toggle('active', form.id === `${tabName}Form`);
+                });
+            }
+            
+            handleLogin(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                const user = this.storage.findUserByEmail(email);
+                
+                if (!user) {
+                    this.showNotification('Пользователь с таким email не найден', 'error');
+                    return;
+                }
+                
+                if (user.password !== password) {
+                    this.showNotification('Неверный пароль', 'error');
+                    return;
+                }
+                
+                this.storage.setCurrentUser(user);
+                this.currentUser = user;
+                this.updateUI();
+                document.getElementById('authModal').classList.remove('active');
+                this.showNotification(`Добро пожаловать, ${user.name}!`, 'success');
+                document.getElementById('loginForm').reset();
+            }
+            
+            handleRegister(e) {
+                e.preventDefault();
+                
+                const userData = {
+                    id: Date.now().toString(),
+                    name: document.getElementById('registerName').value,
+                    email: document.getElementById('registerEmail').value,
+                    phone: document.getElementById('registerPhone').value,
+                    password: document.getElementById('registerPassword').value,
+                    role: document.getElementById('registerRole').value,
+                    createdAt: new Date().toISOString()
+                };
+                
+                if (this.storage.findUserByEmail(userData.email)) {
+                    this.showNotification('Пользователь с таким email уже существует', 'error');
+                    return;
+                }
+                
+                this.storage.saveUser(userData);
+                this.storage.setCurrentUser(userData);
+                this.currentUser = userData;
+                this.updateUI();
+                document.getElementById('authModal').classList.remove('active');
+                this.showNotification('Регистрация прошла успешно!', 'success');
+                document.getElementById('registerForm').reset();
+            }
+            
+            handleBooking(e) {
+                e.preventDefault();
+                
+                if (!this.currentUser) {
+                    this.showNotification('Для бронирования необходимо войти в систему', 'error');
+                    this.showAuthModal();
+                    return;
+                }
+                
+                const formData = {
+                    workshop: document.getElementById('workshop').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    participants: document.getElementById('participants').value,
+                    address: document.getElementById('address').value,
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    experience: document.getElementById('experience').value
+                };
+
+                let isValid = true;
+                const requiredFields = ['workshop', 'date', 'time', 'participants', 'address', 'name', 'phone'];
+                
+                requiredFields.forEach(field => {
+                    if (!formData[field]) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    this.showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                    return;
+                }
+
+                this.selectedWorkshop = formData;
+                this.showPaymentModal();
+            }
+            
+            showPaymentModal() {
+                const modal = document.getElementById('paymentModal');
+                const workshopName = this.getWorkshopName(this.selectedWorkshop.workshop);
+                
+                document.getElementById('paymentWorkshopName').textContent = workshopName;
+                document.getElementById('paymentPrice').textContent = '250 руб.';
+                
+                modal.classList.add('active');
+            }
+            
+            handlePayment(e) {
+                e.preventDefault();
+                
+                if (!this.currentUser) {
+                    this.showNotification('Ошибка авторизации', 'error');
+                    return;
+                }
+                
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cardExpiry = document.getElementById('cardExpiry').value;
+                const cardCvc = document.getElementById('cardCvc').value;
+                const cardHolder = document.getElementById('cardHolder').value;
+                
+                if (!cardNumber || !cardExpiry || !cardCvc || !cardHolder) {
+                    this.showNotification('Заполните все поля платежной формы', 'error');
+                    return;
+                }
+                
+                // Симуляция обработки платежа
+                this.showNotification('Обработка платежа...', 'warning');
+                
+                setTimeout(() => {
+                    const payment = {
+                        id: 'PAY' + Date.now(),
+                        userId: this.currentUser.id,
+                        workshop: this.selectedWorkshop.workshop,
+                        amount: 250,
+                        status: 'completed',
+                        paymentMethod: 'card',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    this.storage.savePayment(payment);
+                    
+                    const booking = {
+                        id: 'BK' + Date.now(),
+                        userId: this.currentUser.id,
+                        userName: this.currentUser.name,
+                        ...this.selectedWorkshop,
+                        status: 'confirmed',
+                        paymentId: payment.id,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    this.storage.saveBooking(booking);
+                    
+                    document.getElementById('paymentModal').classList.remove('active');
+                    document.getElementById('bookingForm').reset();
+                    
+                    this.showNotification(`Бронь #${booking.id} успешно создана и оплачена!`, 'success');
+                    
+                    // Показываем форму отзыва
+                    document.getElementById('reviewFormContainer').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        document.getElementById('reviewFormContainer').scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }, 1000);
+                    
+                }, 2000);
+            }
+            
+            handleReviewSubmit(e) {
+                e.preventDefault();
+                
+                if (!this.currentUser) {
+                    this.showNotification('Для отправки отзыва необходимо войти в систему', 'error');
+                    return;
+                }
+                
+                const workshop = document.getElementById('reviewWorkshop').value;
+                const text = document.getElementById('addReviewText').value;
+                
+                if (!workshop || !text || this.currentRating === 0) {
+                    this.showNotification('Заполните все поля и поставьте оценку', 'error');
+                    return;
+                }
+                
+                const review = {
+                    id: 'REV' + Date.now(),
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    workshop: workshop,
+                    rating: this.currentRating,
+                    text: text,
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.storage.saveReview(review);
+                document.getElementById('addReviewForm').reset();
+                this.setRating('addReviewStars', 0);
+                
+                this.showNotification('Отзыв успешно опубликован!', 'success');
+                this.loadReviews();
+            }
+            
+            deleteReview(reviewId) {
+                if (!this.currentUser) {
+                    this.showNotification('Для удаления отзыва необходимо войти в систему', 'error');
+                    return;
+                }
+                
+                if (!confirm('Вы уверены, что хотите удалить этот отзыв?')) {
+                    return;
+                }
+                
+                const reviews = this.storage.getReviews();
+                const reviewIndex = reviews.findIndex(review => review.id === reviewId);
+                
+                if (reviewIndex !== -1 && reviews[reviewIndex].userId === this.currentUser.id) {
+                    // Удаляем отзыв из массива
+                    reviews.splice(reviewIndex, 1);
+                    localStorage.setItem('cooksy_reviews', JSON.stringify(reviews));
+                    
+                    // Удаляем отзыв из DOM
+                    const reviewElement = document.getElementById(`review-${reviewId}`);
+                    if (reviewElement) {
+                        reviewElement.remove();
+                    }
+                    
+                    this.showNotification('Отзыв успешно удален', 'success');
+                    
+                    // Перезагружаем отзывы в личном кабинете, если он открыт
+                    if (window.cabinetApp) {
+                        window.cabinetApp.loadUserReviews();
+                    }
+                } else {
+                    this.showNotification('Нельзя удалить этот отзыв', 'error');
+                }
+            }
+            
+            loadReviews() {
+                const reviews = this.storage.getReviews();
+                const reviewsList = document.getElementById('reviewsList');
+                
+                if (reviews.length === 0) {
+                    reviewsList.innerHTML = '<p style="text-align: center; color: var(--text-light);">Пока нет отзывов. Будьте первым!</p>';
+                    return;
+                }
+                
+                // Сортируем отзывы по дате (новые сверху)
+                reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                reviewsList.innerHTML = reviews.map(review => `
+                    <div class="review-card" id="review-${review.id}">
+                        <div class="review-header">
+                            <div class="review-author">${review.userName}</div>
+                            <div class="review-date">${new Date(review.createdAt).toLocaleDateString('ru-RU')}</div>
+                        </div>
+                        <div class="workshop-rating">
+                            ${this.generateStarRating(review.rating)}
+                        </div>
+                        <p><strong>${this.getWorkshopName(review.workshop)}</strong></p>
+                        <p>${review.text}</p>
+                        ${review.userId === this.currentUser?.id ? `
+                            <div class="review-actions">
+                                <button class="btn btn-danger" onclick="cooksyApp.deleteReview('${review.id}')">
+                                    <i class="fas fa-trash"></i> Удалить отзыв
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+            
+            generateStarRating(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        stars += '<i class="fas fa-star" style="color: var(--accent);"></i>';
+                    } else {
+                        stars += '<i class="far fa-star" style="color: var(--accent);"></i>';
+                    }
+                }
+                return stars;
+            }
+            
+            getWorkshopName(workshopId) {
+                const workshops = {
+                    'italian-pasta': 'Итальянская паста',
+                    'japanese-sushi': 'Японские суши',
+                    'french-baking': 'Французская выпечка',
+                    'russian-cuisine': 'Русская кухня',
+                    'italian-pizza': 'Итальянская пицца',
+                    'french-desserts': 'Французские десерты'
+                };
+                return workshops[workshopId] || workshopId;
+            }
+            
+            logout() {
+                this.storage.logout();
+                this.currentUser = null;
+                this.updateUI();
+                this.showNotification('Вы вышли из системы', 'success');
+            }
+            
+            updateUI() {
+                const authButtons = document.getElementById('authButtons');
+                const userMenu = document.getElementById('userMenu');
+                const reviewForm = document.getElementById('reviewFormContainer');
+                
+                if (this.currentUser) {
+                    authButtons.style.display = 'none';
+                    userMenu.style.display = 'block';
+                    document.getElementById('userName').textContent = this.currentUser.name;
+                    
+                    document.getElementById('name').value = this.currentUser.name;
+                    document.getElementById('phone').value = this.currentUser.phone;
+                    
+                    // Показываем форму отзыва только для авторизованных пользователей
+                    reviewForm.style.display = 'block';
+                } else {
+                    authButtons.style.display = 'block';
+                    userMenu.style.display = 'none';
+                    
+                    document.getElementById('name').value = '';
+                    document.getElementById('phone').value = '';
+                    
+                    // Скрываем форму отзыва для неавторизованных пользователей
+                    reviewForm.style.display = 'none';
+                }
+            }
+            
+            showChatModal() {
+                if (!this.currentUser) {
+                    this.showNotification('Для использования чата необходимо войти в систему', 'error');
+                    this.showAuthModal();
+                    return;
+                }
+                
+                const modal = document.getElementById('chatModal');
+                modal.classList.add('active');
+                this.loadMessages();
+                
+                setTimeout(() => {
+                    document.getElementById('chatInput').focus();
+                }, 100);
+            }
+            
+            loadMessages() {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messages = this.storage.getMessages();
+    
+                messagesContainer.innerHTML = '';
+    
+                messages.forEach(msg => {
+                    const messageEl = document.createElement('div');
+        
+                    if (msg.userId === 'support' || msg.userId === 'ai_assistant') {
+                        messageEl.className = 'message message-system';
+                        messageEl.innerHTML = `
+                            <div class="message-sender">${msg.userName}</div>
+                            <div>${msg.text}</div>
+                            <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div>
+                        `;
+                    } else {
+                        messageEl.className = `message ${msg.userId === this.currentUser?.id ? 'own' : 'other'}`;
+                        messageEl.innerHTML = `
+                            <div class="message-sender">${msg.userName}</div>
+                            <div>${msg.text}</div>
+                            <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div>
+                        `;
+                    }
+        
+                    messagesContainer.appendChild(messageEl);
+                });
+    
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            sendMessage() {
+                if (!this.currentUser) {
+                    this.showNotification('Для отправки сообщений необходимо войти в систему', 'error');
+                    return;
+                }
+                
+                const input = document.getElementById('chatInput');
+                const text = input.value.trim();
+                
+                if (!text) return;
+                
+                const message = {
+                    id: Date.now().toString(),
+                    userId: this.currentUser.id,
+                    userName: this.currentUser.name,
+                    text: text,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.storage.saveMessage(message);
+                this.loadMessages();
+                input.value = '';
+                
+                setTimeout(() => {
+                    const aiResponse = this.aiAssistant.processMessage(text);
+                    
+                    const randomResponse = supportResponses[Math.floor(Math.random() * supportResponses.length)];
+                    
+                    const aiMessage = {
+                        id: Date.now().toString(),
+                        userId: 'ai_assistant',
+                        userName: 'ИИ-помощник Cooksy',
+                        text: aiResponse,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    this.storage.saveMessage(aiMessage);
+                    this.loadMessages();
+                }, 1000 + Math.random() * 2000);
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${type} show`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        // Глобальные функции
+        function selectWorkshop(workshopName) {
+            const workshopSelect = document.getElementById('workshop');
+            const options = workshopSelect.options;
+            
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].text.includes(workshopName)) {
+                    workshopSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            document.getElementById('booking').scrollIntoView({
+                behavior: 'smooth'
+            });
+            
+            const notification = document.getElementById('notification');
+            notification.textContent = `Выбран мастер-класс: ${workshopName}`;
+            notification.className = 'notification success show';
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Анимация появления элементов при скролле
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeElements.forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', () => {
+            window.cooksyApp = new CooksyApp();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Cooksy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #9f9c81;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #f39c12;
+            --light: #f9f9f9;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success: #27ae60;
+            --warning: #f1c40f;
+            --error: #e74c3c;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Шапка */
+        header {
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            color: var(--white);
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .nav-btn.primary {
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 5px;
+        }
+
+        .nav-btn.primary:hover {
+            background: #f8f9fa;
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .user-menu:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown a, .user-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover, .user-dropdown button:hover {
+            background: #f8f9fa;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--white);
+        }
+
+        /* Основной контент */
+        .cabinet-hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cabinet-hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .cabinet-hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .cabinet-content {
+            padding: 60px 0;
+        }
+
+        .cabinet-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+
+        /* Боковая панель */
+        .sidebar {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 15px;
+        }
+
+        .user-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .user-role {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Основная панель */
+        .main-panel {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-section {
+            display: none;
+        }
+
+        .panel-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+
+        /* Бронирования */
+        .booking-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .booking-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .booking-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Платежи */
+        .payment-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--success);
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .payment-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        /* Отзывы */
+        .review-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-rating {
+            color: var(--accent);
+        }
+
+        /* Профиль */
+        .profile-form {
+            max-width: 600px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            box-shadow: var(--shadow);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--error);
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 968px) {
+            .cabinet-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: 2;
+            }
+            
+            .main-panel {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+
+            .user-menu {
+                margin-top: 10px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .booking-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"><i class="fas fa-utensils"></i> Cook<span>sy</span></a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="index.html" class="nav-btn">Главная</a></li>
+                        <li><a href="index.html#workshops" class="nav-btn">Мастер-классы</a></li>
+                        <li><a href="index.html#booking" class="nav-btn">Бронирование</a></li>
+                        <li id="userMenu" class="user-menu">
+                            <button class="nav-btn">
+                                <i class="fas fa-user"></i> <span id="userName"></span>
+                            </button>
+                            <div class="user-dropdown">
+                                <a href="cabinet.html" class="active">Личный кабинет</a>
+                                <a href="#" id="logoutBtn">Выйти</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section class="cabinet-hero">
+        <div class="container">
+            <h1>Личный кабинет</h1>
+            <p>Управляйте своими бронированиями и настройками профиля</p>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <section class="cabinet-content">
+        <div class="container">
+            <div class="cabinet-grid">
+                <!-- Боковая панель -->
+                <aside class="sidebar">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-name" id="profileUserName">Иван Иванов</div>
+                        <div class="user-role" id="profileUserRole">Ученик</div>
+                        <div class="user-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="bookingsCount">0</div>
+                                <div class="stat-label">Бронирований</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="completedCount">0</div>
+                                <div class="stat-label">Завершено</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul class="sidebar-nav">
+                        <li><a href="#bookings" class="active" data-section="bookings">
+                            <i class="fas fa-calendar-alt"></i> Мои бронирования
+                        </a></li>
+                        <li><a href="#payments" data-section="payments">
+                            <i class="fas fa-credit-card"></i> Платежи
+                        </a></li>
+                        <li><a href="#reviews" data-section="reviews">
+                            <i class="fas fa-star"></i> Мои отзывы
+                        </a></li>
+                        <li><a href="#profile" data-section="profile">
+                            <i class="fas fa-user-edit"></i> Редактировать профиль
+                        </a></li>
+                        <li><a href="#security" data-section="security">
+                            <i class="fas fa-shield-alt"></i> Безопасность
+                        </a></li>
+                    </ul>
+                </aside>
+
+                <!-- Основная панель -->
+                <main class="main-panel">
+                    <!-- Секция бронирований -->
+                    <div id="bookings-section" class="panel-section active">
+                        <div class="section-header">
+                            <h2>Мои бронирования</h2>
+                        </div>
+                        <div id="bookingsList">
+                            <!-- Бронирования будут загружены здесь -->
+                        </div>
+                    </div>
+
+                    <!-- Секция платежей -->
+                    <div id="payments-section" class="panel-section">
+                        <div class="section-header">
+                            <h2>История платежей</h2>
+                        </div>
+                        <div id="paymentsList">
+                            <!-- Платежи будут загружены здесь -->
+                        </div>
+                    </div>
+
+                    <!-- Секция отзывов -->
+                    <div id="reviews-section" class="panel-section">
+                        <div class="section-header">
+                            <h2>Мои отзывы</h2>
+                        </div>
+                        <div id="reviewsList">
+                            <!-- Отзывы будут загружены здесь -->
+                        </div>
+                    </div>
+
+                    <!-- Секция профиля -->
+                    <div id="profile-section" class="panel-section">
+                        <div class="section-header">
+                            <h2>Редактировать профиль</h2>
+                        </div>
+                        <form id="profileForm" class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileName">Имя</label>
+                                    <input type="text" id="profileName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmail">Email</label>
+                                    <input type="email" id="profileEmail" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profilePhone">Телефон</label>
+                                    <input type="tel" id="profilePhone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileRole">Роль</label>
+                                    <select id="profileRole" disabled>
+                                        <option value="student">Ученик</option>
+                                        <option value="chef">Шеф-повар</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn">Сохранить изменения</button>
+                        </form>
+                    </div>
+
+                    <!-- Секция безопасности -->
+                    <div id="security-section" class="panel-section">
+                        <div class="section-header">
+                            <h2>Безопасность</h2>
+                        </div>
+                        <form id="securityForm" class="profile-form">
+                            <div class="form-group">
+                                <label for="currentPassword">Текущий пароль</label>
+                                <input type="password" id="currentPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Новый пароль</label>
+                                <input type="password" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Подтвердите новый пароль</label>
+                                <input type="password" id="confirmPassword">
+                            </div>
+                            <button type="submit" class="btn">Изменить пароль</button>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Cooksy</h3>
+                    <p>Платформа для живых кулинарных мастер-классов, где каждый может учить и учиться готовить.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +7 (965) 998-70-99</li>
+                        <li><i class="fas fa-envelope"></i> arsen.pestryakov@bk.ru</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Cooksy. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        class CabinetApp {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+            
+            init() {
+                this.checkAuth();
+                this.setupEventListeners();
+                this.loadUserData();
+                this.loadBookings();
+                this.loadPayments();
+                this.loadUserReviews();
+            }
+            
+            checkAuth() {
+                const userData = localStorage.getItem('cooksy_current_user');
+                if (!userData || userData === 'null') {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                this.currentUser = JSON.parse(userData);
+            }
+            
+            setupEventListeners() {
+                // Навигация в сайдбаре
+                document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.getAttribute('data-section');
+                        this.switchSection(section);
+                        
+                        // Обновляем активный класс
+                        document.querySelectorAll('.sidebar-nav a').forEach(a => {
+                            a.classList.remove('active');
+                        });
+                        link.classList.add('active');
+                    });
+                });
+                
+                // Формы
+                document.getElementById('profileForm').addEventListener('submit', (e) => this.handleProfileUpdate(e));
+                document.getElementById('securityForm').addEventListener('submit', (e) => this.handlePasswordChange(e));
+                
+                // Выход
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                
+                // Мобильное меню
+                document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                    document.getElementById('navMenu').classList.toggle('active');
+                });
+            }
+            
+            loadUserData() {
+                if (!this.currentUser) return;
+                
+                // Заполняем данные пользователя
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('profileUserName').textContent = this.currentUser.name;
+                document.getElementById('profileUserRole').textContent = this.currentUser.role === 'student' ? 'Ученик' : 'Шеф-повар';
+                
+                document.getElementById('profileName').value = this.currentUser.name;
+                document.getElementById('profileEmail').value = this.currentUser.email;
+                document.getElementById('profilePhone').value = this.currentUser.phone;
+                document.getElementById('profileRole').value = this.currentUser.role;
+            }
+            
+            loadBookings() {
+                const bookings = JSON.parse(localStorage.getItem('cooksy_bookings') || '[]');
+                const userBookings = bookings.filter(booking => booking.userId === this.currentUser.id);
+                
+                const bookingsList = document.getElementById('bookingsList');
+                const bookingsCount = document.getElementById('bookingsCount');
+                const completedCount = document.getElementById('completedCount');
+                
+                // Обновляем счетчики
+                bookingsCount.textContent = userBookings.length;
+                completedCount.textContent = userBookings.filter(b => b.status === 'completed').length;
+                
+                if (userBookings.length === 0) {
+                    bookingsList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-light);">
+                            <i class="fas fa-calendar-times" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>У вас пока нет бронирований</h3>
+                            <p>Забронируйте свой первый мастер-класс и начните кулинарное путешествие!</p>
+                            <a href="index.html#booking" class="btn" style="margin-top: 20px;">Забронировать мастер-класс</a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Сортируем бронирования по дате (новые сверху)
+                userBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                bookingsList.innerHTML = userBookings.map(booking => `
+                    <div class="booking-card">
+                        <div class="booking-header">
+                            <div class="booking-title">${this.getWorkshopName(booking.workshop)}</div>
+                            <div class="booking-status status-${booking.status}">
+                                ${this.getStatusText(booking.status)}
+                            </div>
+                        </div>
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Дата</div>
+                                <div class="detail-value">${new Date(booking.date).toLocaleDateString('ru-RU')}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Время</div>
+                                <div class="detail-value">${booking.time}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Участники</div>
+                                <div class="detail-value">${booking.participants} чел.</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Адрес</div>
+                                <div class="detail-value">${booking.address}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Стоимость</div>
+                                <div class="detail-value">250 руб.</div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <button class="btn" onclick="cabinetApp.viewBooking('${booking.id}')">
+                                <i class="fas fa-eye"></i> Подробнее
+                            </button>
+                            ${booking.status === 'pending' ? `
+                                <button class="btn btn-outline" onclick="cabinetApp.cancelBooking('${booking.id}')">
+                                    <i class="fas fa-times"></i> Отменить
+                                </button>
+                            ` : ''}
+                            ${booking.status === 'completed' ? `
+                                <button class="btn" onclick="cabinetApp.leaveReview('${booking.workshop}')">
+                                    <i class="fas fa-star"></i> Оставить отзыв
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            loadPayments() {
+                const payments = JSON.parse(localStorage.getItem('cooksy_payments') || '[]');
+                const userPayments = payments.filter(payment => payment.userId === this.currentUser.id);
+                
+                const paymentsList = document.getElementById('paymentsList');
+                
+                if (userPayments.length === 0) {
+                    paymentsList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-light);">
+                            <i class="fas fa-credit-card" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>У вас пока нет платежей</h3>
+                            <p>После оплаты мастер-класса здесь появится история ваших платежей.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Сортируем платежи по дате (новые сверху)
+                userPayments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                paymentsList.innerHTML = userPayments.map(payment => `
+                    <div class="payment-card">
+                        <div class="payment-header">
+                            <div>
+                                <div class="booking-title">${this.getWorkshopName(payment.workshop)}</div>
+                                <div class="detail-label">ID платежа: ${payment.id}</div>
+                            </div>
+                            <div class="payment-amount">${payment.amount} руб.</div>
+                        </div>
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Дата платежа</div>
+                                <div class="detail-value">${new Date(payment.createdAt).toLocaleDateString('ru-RU')}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Способ оплаты</div>
+                                <div class="detail-value">${this.getPaymentMethodText(payment.paymentMethod)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Статус</div>
+                                <div class="detail-value">${this.getPaymentStatusText(payment.status)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            loadUserReviews() {
+                const reviews = JSON.parse(localStorage.getItem('cooksy_reviews') || '[]');
+                const userReviews = reviews.filter(review => review.userId === this.currentUser.id);
+                
+                const reviewsList = document.getElementById('reviewsList');
+                
+                if (userReviews.length === 0) {
+                    reviewsList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-light);">
+                            <i class="fas fa-star" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>У вас пока нет отзывов</h3>
+                            <p>После посещения мастер-класса вы можете оставить отзыв и помочь другим пользователям.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Сортируем отзывы по дате (новые сверху)
+                userReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                reviewsList.innerHTML = userReviews.map(review => `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="booking-title">${this.getWorkshopName(review.workshop)}</div>
+                            <div class="review-rating">
+                                ${this.generateStarRating(review.rating)}
+                            </div>
+                        </div>
+                        <div class="review-date" style="margin-bottom: 10px; color: var(--text-light);">
+                            ${new Date(review.createdAt).toLocaleDateString('ru-RU')}
+                        </div>
+                        <p>${review.text}</p>
+                    </div>
+                `).join('');
+            }
+            
+            generateStarRating(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        stars += '<i class="fas fa-star" style="color: var(--accent);"></i>';
+                    } else {
+                        stars += '<i class="far fa-star" style="color: var(--accent);"></i>';
+                    }
+                }
+                return stars;
+            }
+            
+            getWorkshopName(workshopId) {
+                const workshops = {
+                    'italian-pasta': 'Итальянская паста',
+                    'japanese-sushi': 'Японские суши',
+                    'french-baking': 'Французская выпечка',
+                    'russian-cuisine': 'Русская кухня',
+                    'italian-pizza': 'Итальянская пицца',
+                    'french-desserts': 'Французские десерты'
+                };
+                return workshops[workshopId] || workshopId;
+            }
+            
+            getStatusText(status) {
+                const statuses = {
+                    'pending': 'Ожидание',
+                    'confirmed': 'Подтверждено',
+                    'completed': 'Завершено',
+                    'cancelled': 'Отменено'
+                };
+                return statuses[status] || status;
+            }
+            
+            getPaymentMethodText(method) {
+                const methods = {
+                    'card': 'Банковская карта',
+                    'yoomoney': 'ЮMoney',
+                    'sbp': 'СБП'
+                };
+                return methods[method] || method;
+            }
+            
+            getPaymentStatusText(status) {
+                const statuses = {
+                    'pending': 'В обработке',
+                    'completed': 'Завершен',
+                    'failed': 'Ошибка'
+                };
+                return statuses[status] || status;
+            }
+            
+            switchSection(sectionId) {
+                // Скрываем все секции
+                document.querySelectorAll('.panel-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Показываем выбранную секцию
+                document.getElementById(`${sectionId}-section`).classList.add('active');
+                
+                // Загружаем данные для секции
+                if (sectionId === 'payments') {
+                    this.loadPayments();
+                } else if (sectionId === 'reviews') {
+                    this.loadUserReviews();
+                }
+            }
+            
+            handleProfileUpdate(e) {
+                e.preventDefault();
+                
+                const updatedUser = {
+                    ...this.currentUser,
+                    name: document.getElementById('profileName').value,
+                    email: document.getElementById('profileEmail').value,
+                    phone: document.getElementById('profilePhone').value
+                };
+                
+                // Обновляем пользователя в localStorage
+                const users = JSON.parse(localStorage.getItem('cooksy_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === this.currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = updatedUser;
+                    localStorage.setItem('cooksy_users', JSON.stringify(users));
+                }
+                
+                // Обновляем текущего пользователя
+                localStorage.setItem('cooksy_current_user', JSON.stringify(updatedUser));
+                this.currentUser = updatedUser;
+                
+                // Обновляем UI
+                this.loadUserData();
+                this.showNotification('Профиль успешно обновлен', 'success');
+            }
+            
+            handlePasswordChange(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (currentPassword !== this.currentUser.password) {
+                    this.showNotification('Текущий пароль неверен', 'error');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    this.showNotification('Новые пароли не совпадают', 'error');
+                    return;
+                }
+                
+                if (newPassword.length < 6) {
+                    this.showNotification('Пароль должен содержать минимум 6 символов', 'error');
+                    return;
+                }
+                
+                // Обновляем пароль
+                const updatedUser = {
+                    ...this.currentUser,
+                    password: newPassword
+                };
+                
+                const users = JSON.parse(localStorage.getItem('cooksy_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === this.currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = updatedUser;
+                    localStorage.setItem('cooksy_users', JSON.stringify(users));
+                }
+                
+                localStorage.setItem('cooksy_current_user', JSON.stringify(updatedUser));
+                this.currentUser = updatedUser;
+                
+                // Очищаем форму
+                document.getElementById('securityForm').reset();
+                this.showNotification('Пароль успешно изменен', 'success');
+            }
+            
+            viewBooking(bookingId) {
+                const bookings = JSON.parse(localStorage.getItem('cooksy_bookings') || '[]');
+                const booking = bookings.find(b => b.id === bookingId);
+                
+                if (booking) {
+                    alert(`Детали бронирования #${booking.id}\n\n` +
+                          `Мастер-класс: ${this.getWorkshopName(booking.workshop)}\n` +
+                          `Дата: ${new Date(booking.date).toLocaleDateString('ru-RU')}\n` +
+                          `Время: ${booking.time}\n` +
+                          `Участники: ${booking.participants} человек\n` +
+                          `Адрес: ${booking.address}\n` +
+                          `Стоимость: 250 руб.\n` +
+                          `Уровень: ${this.getExperienceText(booking.experience)}\n` +
+                          `Статус: ${this.getStatusText(booking.status)}\n` +
+                          `Забронировано: ${new Date(booking.createdAt).toLocaleString('ru-RU')}`);
+                }
+            }
+            
+            getExperienceText(experience) {
+                const experiences = {
+                    'beginner': 'Начинающий',
+                    'intermediate': 'Средний',
+                    'advanced': 'Продвинутый'
+                };
+                return experiences[experience] || experience;
+            }
+            
+            cancelBooking(bookingId) {
+                if (!confirm('Вы уверены, что хотите отменить это бронирование?')) {
+                    return;
+                }
+                
+                const bookings = JSON.parse(localStorage.getItem('cooksy_bookings') || '[]');
+                const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+                
+                if (bookingIndex !== -1) {
+                    bookings[bookingIndex].status = 'cancelled';
+                    localStorage.setItem('cooksy_bookings', JSON.stringify(bookings));
+                    this.loadBookings();
+                    this.showNotification('Бронирование отменено', 'success');
+                }
+            }
+            
+            leaveReview(workshopId) {
+                // Перенаправляем на главную страницу к форме отзывов
+                window.location.href = 'index.html#testimonials';
+            }
+            
+            logout() {
+                localStorage.setItem('cooksy_current_user', JSON.stringify(null));
+                window.location.href = 'index.html';
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${type} show`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', () => {
+            window.cabinetApp = new CabinetApp();
+        });
+    </script>
+</body>
+</html>
